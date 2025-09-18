@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forecast App</title>
+    <style>
+        .body{
+            background-color: #5f9ea0;
+            margin: 0;
+            padding: 0;
+             
+            font-family: Arial, sans-serif;
+        }
+        .form-container{
+            margin-top: 250px;
+            margin-left: 525px;
+            border: 2px solid black;
+            width: 350px;
+            padding: 10px;
+            padding-left: 20px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: small;
+        }
+        .input{
+            height: 30px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+
+        .dropdown{
+            height: 30px;
+            margin-left: 60px;
+            width: auto;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+
+        .button{
+            margin-left: 90px;
+            height: 40px;
+            width: 150px;
+            border-radius: 5px;
+            background-color: #5f9ea0;
+            font-family: Arial, sans-serif;
+        }
+
+        .button:hover{
+            background-color: gray;
+            transition: transform 0.3s ease-in-out;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .response{
+            margin-left: 120px;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+        background-color: #343a40; /* Dark background color */
+        padding-left: 200px;
+        padding-right: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar .navbar-nav .anchor {
+        color: #f8f9fa; /* Light text color */
+        padding: 10px 10px;
+        padding-left: 10px;
+        padding-right: 20px;
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 16px;
+        border-radius: 10px;
+        transition: background-color 0.1s ease, color 0.1s ease;
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar .navbar-nav .anchor:hover {
+        background-color: #5f9ea0; /* Highlight color on hover */
+        color: #ffffff; /* Change text to white */
+        text-decoration: none; /* No underline */
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar .navbar-nav .anchor.active {
+        background-color: #5f9ea0; /* Active state background */
+        color: #ffffff; /* Active state text color */
+        font-family: Arial, sans-serif;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm fixed-top">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse p-2" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a href="{{ url_for('Home')}}" class="anchor">Home</a>
+                    <a href="{{ url_for('Expect_sol')}}" class="anchor">Expected Solutions</a>
+                    <a href="{{ url_for('Data_set')}}" class="anchor">District Data</a>
+                    <a href="{{ url_for('Reservoir_data') }}" class="anchor">Reservoir Data</a>
+                    <a href="{{ url_for('ML_Algorithms')}}" class="anchor">ML Algorithms</a>
+                    <a href="{{ url_for('imdb')}}" class="anchor">Forecasting</a>
+                    <a href="{{ url_for('Dashboard')}}" class="anchor">Dashboard</a>
+                    
+                    <!-- <a href="{{ url_for('Res_con')}}" class="anchor">Reservoir Connection</a> -->
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="form-container">
+        <h1 class="h1">Water Demand Forecast</h1>
+        <form id="forecast-form">
+            <label for="months" class="label1">Enter No. of Months:</label>
+            <input class="input" type="number" name="months" id="months" placeholder="Months" required><br>
+            <label for="year" class="label2">Select Year:</label>
+            <select class="dropdown" id="year" name="years" required>
+                <option value="" disabled selected>--Select--</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+            </select><br><br>
+            <button class="button" type="button" id="forecast-btn">Forecast</button>
+        </form>
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        document.getElementById("forecast-btn").addEventListener("click", function() {
+            const months = document.getElementById("months").value;
+            const year = document.getElementById("year").value;
+            
+            if (!months || months <= 0) {
+                alert("Please enter a valid number of months.");
+                return;
+            }
+            if (!year) {
+                alert("Please select a year.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('months', months);
+            formData.append('years', year);
+
+            fetch('/forecast', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const responseDiv = document.getElementById("response");
+                responseDiv.innerHTML = "";
+                if (data.error) {
+                    responseDiv.textContent = data.error;
+                    responseDiv.style.color = "red";
+                } else {
+                    data.forecast.forEach(value => {
+                        const roundedValue = parseFloat(value).toFixed(2);
+                        const p = document.createElement("p");
+                        p.textContent = `Forecast: ${roundedValue}`;
+                        p.style.color = "#007BFF";
+                        responseDiv.appendChild(p);
+                    });
+                }
+            })
+            .catch(error => {
+                const responseDiv = document.getElementById("response");
+                responseDiv.textContent = "Error: " + error.message;
+                responseDiv.style.color = "red";
+            });
+        });
+    </script>
+</body>
+</html>

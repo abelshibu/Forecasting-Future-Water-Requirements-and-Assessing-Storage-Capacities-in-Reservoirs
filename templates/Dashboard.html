@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script>
+        function navigateToLink() {
+            var selectedOption = document.getElementById("dropdown").value;
+            if (selectedOption) {
+                window.location.href = selectedOption;
+            }
+        }
+    </script>
+    <style>
+        body {
+   margin: 0;
+   font-family: Arial, sans-serif;
+   background-color: #5f9ea0; /* Sky blue background */
+   height: 100vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: cover;
+}
+
+.form-container{
+   background-color: #ffffff;
+   height: auto;
+   width: 425px;
+   padding: 10px;
+   padding-left: 30px;
+   border-radius: 10px;
+}
+
+.h1{
+   padding-left: 30px;
+   margin-top: 10px;
+   font-size: 26px;
+   font-weight: bold;
+}
+
+.input{
+   height: 50px;
+   width: 360px;
+   padding-left: 7px;
+   border: 2px solid rgb(97, 97, 97);
+   border-radius: 10px;
+}
+
+.button{
+   margin-top: 10px;
+   margin-left: 135px;
+   height: 40px;
+   width: 90px;
+   border-radius: 10px;
+}
+
+.Data-visualization {
+   margin-top: 320px;
+   text-align: center;
+   font-size: large;
+}
+
+.Dropdown {
+   height: 50px;
+   width: 150px;
+   margin-bottom: 50px;
+   border-radius: 5px;
+}
+
+.navbar {
+   background-color: #343a40; /* Dark background color */
+   padding-left: 200px;
+   padding-right: 30px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   padding-top: 25px;
+   padding-bottom: 25px;
+   position: fixed;
+   width: 100%;
+   top: 0;
+   left: 0;
+   z-index: 1000;
+}
+  
+.navbar .navbar-nav .anchor {
+   color: #f8f9fa; /* Light text color */
+   padding: 10px 10px;
+   padding-left: 10px;
+   padding-right: 20px;
+   margin: 0 10px;
+   text-decoration: none;
+   font-size: 16px;
+   border-radius: 10px;
+   transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.navbar .navbar-nav .anchor:hover {
+   background-color: #5f9ea0; /* Highlight color on hover */
+   color: #ffffff; /* Change text to white */
+   text-decoration: none; /* No underline */
+}
+
+.navbar .navbar-nav .anchor.active {
+   background-color: #5f9ea0; /* Active state background */
+   color: #ffffff; /* Active state text color */
+}
+
+
+   </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm fixed-top">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse p-2" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a href="{{ url_for('Home')}}" class="anchor">Home</a>
+                    <a href="{{ url_for('Expect_sol')}}" class="anchor">Expected Solutions</a>
+                    <a href="{{ url_for('Data_set')}}" class="anchor">District Data</a>
+                    <a class="anchor" href="{{ url_for('Reservoir_data') }}">Reservoir Data</a>
+                    <a href="{{ url_for('ML_Algorithms')}}" class="anchor">ML Algorithms</a>
+                    <a href="{{ url_for('imdb')}}" class="anchor">Forecasting</a>
+                    <a href="{{ url_for('Dashboard')}}" class="anchor">Dashboard</a>
+                    
+                    <!-- <a href="{{ url_for('Res_con')}}" class="anchor">Reservoir Connection</a> -->
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="Data-visualization">
+        <label for="Data-visualization">Select District: </label>
+        <select class="Dropdown" id="dropdown" onchange="navigateToLink()">
+            <option value="dropdown">--Select--</option>
+            <option value="d1">Ananthapuram</option>
+            <option value="d5">Krishna</option>
+            <option value="d6">Kurnool</option>
+            <option value="d2">Chittor</option>
+        </select>
+
+        <div id="iframe-container">
+            <iframe id="d1" class="iframe" title="anathapuram dashboard" width="1024" height="804" src="https://app.powerbi.com/view?r=eyJrIjoiYjhlOTY2NzktNGQwNy00OThhLWFiMmItMmUwY2UyY2RlN2IwIiwidCI6IjVlYzg2NTdmLTM3Y2EtNDU3Ni1hOTM5LThiMDI1NTNkY2JkNSJ9" frameborder="0" allowFullScreen="true" style="display: none;"></iframe>
+            <iframe id="d2" class="iframe" title="chitoor dashboard" width="1024" height="804" src="https://app.powerbi.com/view?r=eyJrIjoiODgyNmE2MTItZmQ3MC00ZmMxLWJhYzAtNDRhNGUxZjg3ODM4IiwidCI6IjVlYzg2NTdmLTM3Y2EtNDU3Ni1hOTM5LThiMDI1NTNkY2JkNSJ9" frameborder="0" allowFullScreen="true" style="display: none;"></iframe>
+            <iframe id="d5" class="iframe" title="krishna dashboard" width="1024" height="804" src="https://app.powerbi.com/view?r=eyJrIjoiYWMyZWE2ZjgtZWQyNy00ZjQ2LWIwNGYtZWZhNWIwMGY5NzBjIiwidCI6IjVlYzg2NTdmLTM3Y2EtNDU3Ni1hOTM5LThiMDI1NTNkY2JkNSJ9" frameborder="0" allowFullScreen="true" style="display: none;"></iframe>
+            <iframe id="d6" class="iframe" title="kurnool dashboard" width="1024" height="804" src="https://app.powerbi.com/view?r=eyJrIjoiYTU0ZGE2YzUtODJhZi00ZTJkLTk4NjktMTI5MzkwNTNjZjA2IiwidCI6IjVlYzg2NTdmLTM3Y2EtNDU3Ni1hOTM5LThiMDI1NTNkY2JkNSJ9" frameborder="0" allowFullScreen="true" style="display: none;"></iframe>
+        </div>
+    </div>
+
+</body>
+<script>
+    function navigateToLink() {
+    var selectedOption = document.getElementById("dropdown").value;
+    
+    // Hide all iframes first
+    var iframes = document.querySelectorAll("iframe");
+    for (var i = 0; i < iframes.length; i++) {
+        iframes[i].style.display = "none";
+    }
+
+    // Show the iframe for the selected district
+    if (selectedOption !== "dropdown") {
+        document.getElementById(selectedOption).style.display = "block";
+    }
+}
+
+</script>
+</html>
